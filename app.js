@@ -104,10 +104,11 @@ app.put("/change-password/", async (request, response) => {
     response.send("User not registered");
   } else {
     const isPasswordMatched = await bcrypt.compare(oldPassword, user.password);
+    console.log(isPasswordMatched);
     if (isPasswordMatched === true) {
       const newPasswordLength = newPassword.length;
       if (newPasswordLength >= 5) {
-        const newHashPassword = bcrypt.hash(newPassword, 10);
+        const newHashPassword = await bcrypt.hash(newPassword, 10);
         changePassword = `
             UPDATE user
             SET password = '${newHashPassword}'
